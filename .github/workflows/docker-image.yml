@@ -11,7 +11,7 @@ on:
 
 jobs:
 
-  build:
+  Build_Secure_Image:
 
     runs-on: ubuntu-latest
 
