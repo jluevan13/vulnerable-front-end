@@ -14,7 +14,7 @@ jobs:
   Build_Secure_Image:
 
     runs-on: ubuntu-latest
-    name: Set environmental variables for Prisma Cloud access
+    # name: Set environmental variables for Prisma Cloud access
     env: 
       TL_USER: ${{ secrets.TL_USER }}
       TL_PASS: ${{ secrets.TL_PASS }}
@@ -37,4 +37,6 @@ jobs:
       run: curl -s -k -u $TL_USER:$TL_PASS "https://$TL_CONSOLE/api/v1/util/twistcli" -v -o twistcli;chmod +x twistcli
     
     - name: Scan image for vulns and compliance issues
-      run: ./twistcli images scan --u $TL_USER --p $TL_PASS --address https://$TL_CONSOLE --details vulnerable-test -o output.json
+      run: |
+        docker pull vulnerable-test 
+        ./twistcli images scan --u $TL_USER --p $TL_PASS --address https://$TL_CONSOLE --details vulnerable-test -o output.json
