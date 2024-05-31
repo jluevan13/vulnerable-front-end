@@ -33,7 +33,7 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Build and push image
+    - name: Build image
       uses: azure/docker-login@v1
       with: 
         login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
@@ -41,15 +41,16 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/vulnerable-test:${{ github.sha }} 
 
-
-    # - name: Build the Docker image
-    #   run: docker build . --file Dockerfile --tag vulnerable-test:latest
-
-    - name: check images
-      run: docker images
-
     - name: Download twistcli
       run: curl -s -k -u $TL_USER:$TL_PASS "https://$TL_CONSOLE/api/v1/util/twistcli" -v -o twistcli;chmod +x twistcli
     
     - name: Scan image for vulns and compliance issues
       run: ./twistcli images scan --u $TL_USER --p $TL_PASS --address https://$TL_CONSOLE --details ${{ secrets.REGISTRY_LOGIN_SERVER }}/vulnerable-test:${{ github.sha }} -o output.json
+
+    - name: Push image
+      uses: azure/docker-login@v1
+      with: 
+        login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    - run: docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
