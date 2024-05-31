@@ -38,5 +38,5 @@ jobs:
     
     - name: Scan image for vulns and compliance issues
       run: |
-        docker pull vulnerable-test 
+        docker pull vulnerable-test:latest
         ./twistcli images scan --u $TL_USER --p $TL_PASS --address https://$TL_CONSOLE --details vulnerable-test:latest -o output.json
