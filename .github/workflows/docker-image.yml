@@ -28,7 +28,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag vulnerable-test:$(date +%s)
+      run: docker build . --file Dockerfile --tag vulnerable-test:latest
 
     - name: check images
       run: docker images
@@ -39,4 +39,4 @@ jobs:
     - name: Scan image for vulns and compliance issues
       run: |
         docker pull vulnerable-test 
-        ./twistcli images scan --u $TL_USER --p $TL_PASS --address https://$TL_CONSOLE --details vulnerable-test -o output.json
+        ./twistcli images scan --u $TL_USER --p $TL_PASS --address https://$TL_CONSOLE --details vulnerable-test:latest -o output.json
