@@ -51,6 +51,9 @@ jobs:
     - name: Scan image for vulns and compliance issues
       run: ./twistcli images scan --u $TL_USER --p $TL_PASS --address https://$TL_CONSOLE --details ${{ secrets.REGISTRY_LOGIN_SERVER }}/vulnerable-test:${{ github.sha }} -o output.json
     
+    - name: Install checkov
+      run: pip3 install checkov
+    
     - name: Checkov image scan
       id: checkov
       # uses: bridgecrewio/checkov-action@master
