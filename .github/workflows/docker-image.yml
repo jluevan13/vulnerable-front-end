@@ -24,6 +24,7 @@ jobs:
       BYPASS_IMAGESCAN: 0
       BYPASS_WF: 1
       BYPASS_SANDBOX: 1
+      PRISMA_API_URL: https://api0.prismacloud.io
 
     steps:
     - uses: actions/checkout@v4
@@ -46,6 +47,17 @@ jobs:
     
     - name: Scan image for vulns and compliance issues
       run: ./twistcli images scan --u $TL_USER --p $TL_PASS --address https://$TL_CONSOLE --details ${{ secrets.REGISTRY_LOGIN_SERVER }}/vulnerable-test:${{ github.sha }} -o output.json
+    
+    - name: Checkov image scan
+      id: checkov
+      uses: bridgecrewio/checkov-action@master
+      with:
+        quiet: true
+        api-key: ${{ secrets.BC_API_KEY }}
+        directory: .
+        use_enforcement_rules: true
+        docker_image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/vulnerable-test:${{ github.sha }}
+        dockerfile_path: ./Dockerfile
 
     - name: Push image
       uses: azure/docker-login@v1
