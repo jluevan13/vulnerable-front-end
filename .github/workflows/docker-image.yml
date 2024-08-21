@@ -55,9 +55,9 @@ jobs:
         quiet: true
         api-key: ${{ secrets.BC_API_KEY }}
         directory: .
-        use_enforcement_rules: true
         docker_image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/vulnerable-test:${{ github.sha }}
         dockerfile_path: ./Dockerfile
+        use_enforcement_rules: true
 
     - name: Push image
       uses: azure/docker-login@v1
