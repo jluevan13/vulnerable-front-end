@@ -14,6 +14,9 @@ jobs:
   Build_Secure_Image:
 
     runs-on: ubuntu-latest
+    strategy:
+                  matrix:
+                        python-version: [3.10]
     # name: Set environmental variables for Prisma Cloud access
     env: 
       TL_USER: ${{ secrets.TL_USER }}
