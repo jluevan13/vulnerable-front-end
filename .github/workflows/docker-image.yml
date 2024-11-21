@@ -66,7 +66,7 @@ jobs:
       #   dockerfile_path: ./Dockerfile
       #   use_enforcement_rules: true
       run: checkov --bc-api-key ${{ secrets.BC_API_KEY }} --branch update-actions-workflow --repo-id jluevan13/vulnerable-front-end --docker-image ${{ secrets.REGISTRY_LOGIN_SERVER }}/vulnerable-test:${{ github.sha }} --dockerfile-path Dockerfile --use-enforcement-rules --framework sca_package  --output sarif --quiet
-
+### push image to new registry
     - name: Push image
       uses: azure/docker-login@v1
       with: 
